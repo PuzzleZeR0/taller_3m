@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de usuarios</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); /* Fuente Roboto */
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            /* background: url('ruta/a/tu/imagen.jpg') no-repeat center center fixed; (Imagen de fondo) */
+            background-color: #5a676b; /* Color de fondo de la página */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: #47c8c0; /* Color de fondo del contenedor */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px; /* Ancho del contenedor */
+            height: 400px; /* Altura del contenedor */
+            text-align: center; /* Alinear el texto a la izquierda */
+        }
+        .login-container img {
+            width: 100px; /* Ajustar el tamaño del logo */
+            margin-bottom: 20px;
+        }
+        .login-container h2 {
+            margin-top: 0;
+            color: #ff1688; /* Color del texto del título */
+        }
+        .login-container input {
+            width: 92%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-bottom: 2px solid #ff629d; /* Solo una línea en la parte inferior */
+            background: transparent; /* Fondo transparente */
+            color: white; /* Color del texto */
+        }
+        .login-container input::placeholder {
+            color: #e2ddcc; /* Color del placeholder */
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 14px;
+            background-color: #ff629d; 
+            border: none;
+            border-radius: 2px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .login-container button:hover {
+            background-color: #ff1688; /* Color de fondo del botón al pasar el cursor */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="/src/img/necoarc1.png" alt="Logo" style="width: 100px; margin-bottom: 20px;">
+        <h2>Registro de usuarios</h2>
+        <form id="usuarioForm">
+            <input type="text" id="nombre" placeholder="Nombre" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="contraseña" placeholder="Contraseña" required>
+            <button type="submit">Registrar</button>
+        </form>
+        <div id="mensaje"></div>
+    </div>
+    <script>
+        document.getElementById('usuarioForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const contraseña = document.getElementById('contraseña').value;
+
+            try {
+                const response = await fetch('/usuarios', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nombre, email, contraseña })
+                });
+
+                const data = await response.text();
+                document.getElementById('mensaje').innerText = data;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('mensaje').innerText = 'Error al registrar el usuario';
+            }
+        });
+    </script>
+</body>
+</html>
